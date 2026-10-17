@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign in — Vouchnotes{% endblock %}
+{% block description %}Find new music, blog about your favorites.{% endblock %}
+
+{% block content %}
+    <div class="flex justify-center my-8">
+        <form method="post">
+            <fieldset class="fieldset bg-base-100 border-base-300 rounded-box w-xs border p-4">
+                <legend class="fieldset-legend"><a class="link" href="{{ url_for('vsignin') }}">Sign In</a> / <a class="link" href="{{ url_for('vsignup') }}">Sign Up</a></legend>
+
+                <label class="label">Email</label>
+                <input type="email" class="input" name="user_email">
+
+                <label class="label">Password</label>
+                <input type="password" class="input" name="user_password">
+
+                <input class="btn btn-neutral mt-4" type="submit" value="Sign in">
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

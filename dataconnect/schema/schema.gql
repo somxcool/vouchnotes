@@ -1,0 +1,32 @@
+type User @table {
+    authId: String!
+    displayName: String!
+    createdDate: Date! @default(expr: "request.time")
+}
+
+type Release @table {
+    title: String!
+    masterId: String!
+    regId: String!
+    imageUrl: String!
+    genres: [String!]
+}
+
+type Follow @table {
+    followerId: UUID!
+    followingId: UUID!
+}
+
+type Recommendation @table {
+    user: User!
+    release: Release!
+    recText: String
+    likes: Int!
+    recTime: Timestamp! @default(expr: "request.time")
+}
+
+type Like @table {
+    user: User!
+    rec: Recommendation!
+    justtext: String
+}

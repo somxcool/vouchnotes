@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile — Vouchnotes{% endblock %}
+{% block description %}Find new music, blog about your favorites.{% endblock %}
+
+{% block content %}
+    <div class="flex justify-center">
+        <div class="card bg-base-100 border border-base-300 w-full my-8 ">
+            <div class="card-body">
+                <div class="card-title" aria-label="user handle">@{{ thedisplayname }}</div>
+                {% if following_already %}
+                    <form method="post">
+                        <input type="hidden" name="follow_id" value="{{ follow_id }}">
+                        <input class="link" type="submit" value="Unfollow">
+                    </form>
+                {% elif current_user.displayName == thedisplayname %}
+                    <a>This is you.</a>
+                {% elif not current_user.is_authenticated %}
+                    <a href="{{ url_for('vsignin') }}" class="link">Sign in to follow</a>
+                {% else %}
+                    <form method="post">
+                        <input type="hidden" name="following_name" value="{{ theuserkey }}">
+                        <input class="link" type="submit" value="Follow">
+                    </form>
+                {% endif %}
+                <div class="stats stats-vertical lg:stats-horizontal border border-base-300">
+                    <div class="stat">
+                        <div class="stat-title">Total likes</div>
+                        <div class="stat-value">{{ total_user_likes }}</div>
+                        <div class="stat-desc"></div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title">Total recommendations</div>
+                        <div class="stat-value">{{ user_rec_count }}</div>
+                        <div class="stat-desc"></div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}

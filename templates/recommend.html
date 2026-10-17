@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}New post — Vouchnotes{% endblock %}
+{% block description %}Find new music, blog about your favorites.{% endblock %}
+
+{% block content %}
+
+    <div class="flex justify-center my-8">
+        <fieldset class="fieldset">
+            <a href="{{ url_for('vsearch') }}" class="link">Back to search</a>
+            <label class="label">Recommending {{ session.record_title }}...</label>
+            <div class="avatar">
+                <div class="w-24 rounded">
+                    <img src="{{ session.record_cover }}" alt="release cover">
+                </div>
+            </div>
+            <div class="divider"></div>
+            <form method="post">
+                <label class="floating-label">
+                    <span>Content (optional)</span>
+                    <textarea class="textarea" name="rec_content"></textarea>
+                </label>
+                <input class="btn btn-primary mt-4" type="submit" value="Post recommendation">
+            </form>
+        </fieldset>
+    </div>
+
+{% endblock %}

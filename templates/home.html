@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Vouchnotes{% endblock %}
+{% block description %}Find new music, blog about your favorites.{% endblock %}
+
+{% block content %}
+    <div class="flex justify-center my-8">
+        <a href="{{ url_for('vsearch') }}" class="btn btn-dash btn-secondary">Recommend something</a>
+    </div>
+    <div class="flex justify-center my-8">
+        <div role="tablist" class="tabs tabs-border">
+            <a role="tab" class="tab {% if request.endpoint == 'vhomeall' %}tab-active{% endif %}" href="{{ url_for('vhomeall') }}">All recommendations</a>
+            <a role="tab" class="tab {% if request.endpoint == 'vhomefollowing' %}tab-active{% endif %}" href="{{ url_for('vhomefollowing') }}">{% if current_user.is_authenticated %}Following only{% else %}Following only (sign in){% endif %}</a>
+        </div>
+    </div>
+    <div class="flex justify-center my-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mx-8 md:mx-16">
+            {% for rec in recommendations_list %}
+                <div class="card bg-base-100 shadow-sm">
+                    <figure>
+                        <img src="{{ rec['release']['imageUrl'] }}" alt="cover art">
+                    </figure>
+                    <div class="card-body">
+                        <h2 class="card-title" aria-label="release title">{{ rec['release']['title'] }}</h2>
+                        <p>{{ rec['recText'] }}</p>
+                        <div class="card-actions mt-2 grid grid-cols-2">
+                            <a href="{{ url_for('vprofile', thedisplayname=rec['user']['displayName']) }}" class="link justify-self-start" aria-label="profile">{{ rec['user']['displayName'] }}</a>
+                            <form method="post" class="justify-self-end">
+                                <input type="hidden" name="recId_liked" value="{{ rec['id'] }}">
+                                <input type="hidden" name="rec_user_id" value="{{ rec['user']['id'] }}">
+                                <input class="link" type="submit" value="{{ rec['likes'] }}" aria-label="upvote / like">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,80 @@
+query GetUserByAuthId($targetAuthId: String!) @auth(level: PUBLIC) {
+    users(where: {authId: { eq: $targetAuthId } }) {
+        id
+    }
+}
+
+query GetUserByDisplayName($targetDisplayName: String!) @auth(level: PUBLIC) {
+    users(where: {displayName: { eq: $targetDisplayName } }) {
+        id
+    }
+}
+
+query ListRecommendations @auth(level: PUBLIC) {
+    recommendations(orderBy: [{ recTime: DESC }], limit: 28) {
+        id
+        user {
+            id
+            displayName
+        }
+        release {
+            title
+            imageUrl
+        }
+        recText
+        likes
+        recTime
+    }
+}
+
+query GetRecommendationsByUserId($userId: UUID) @auth(level: PUBLIC) {
+    recommendations(where: {userId: { eq: $userId } }) {
+        id
+        release {
+            title
+            imageUrl
+        }
+        recText
+        likes
+        recTime
+    }
+}
+
+query GetReleaseByFilter($masterId: String!, $regId: String!) @auth(level: PUBLIC) {
+    releases(where: {
+        _or: [
+            { masterId: {eq: $masterId} },
+            { regId: {eq: $regId} }
+        ]
+    }) {
+        id
+    }
+}
+
+query GetLikeByUserAndRecommendationIds($user: UUID, $recommendation: UUID) @auth(level: PUBLIC) {
+    likes(where: {
+        _and: [
+            { userId: {eq: $user} },
+            { recId: {eq: $recommendation} }
+        ]
+    }) {
+        justtext
+    }
+}
+
+query GetFollowByFilter($follower: UUID, $following: UUID) @auth(level: PUBLIC) {
+    follows(where: {
+        _and: [
+            { followerId: {eq: $follower} },
+            { followingId: {eq: $following} }
+        ]
+    }) {
+        id
+    }
+}
+
+query GetFollowByFollowerId($follower: UUID) @auth(level: PUBLIC) {
+    follows(where: { followerId: {eq: $follower} }) {
+        followingId
+    }
+}

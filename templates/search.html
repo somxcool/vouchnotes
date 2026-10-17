@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Search — Vouchnotes{% endblock %}
+{% block description %}Find new music, blog about your favorites.{% endblock %}
+
+{% block content %}
+    <div class="flex justify-center my-8">
+        <form method="post">
+            <fieldset class="fieldset w-xs p-4">
+                <label class="label">Find music</label>
+                <div class="join">
+                    <input type="text" class="input join-item" name="search_request" placeholder="What do you want to look for?" required>
+                    <input class="btn btn-primary join-item" type="submit" value="search">
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="flex justify-center my-8">
+        {% if jsonresponse is not none %}
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mx-16">
+                {% for a_release in all_releases %}
+                    <div class="card bg-base-100 border-base-300 border">
+                        <figure class="border border-base-300">
+                            <img src="{{ a_release['cover_image'] }}" class="size-100 object-contain" alt="release cover">
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="card-title" aria-label="release title">{{ a_release['title'] }}</h2>
+                            {% for g in a_release['genre'] %}
+                                <div class="badge badge-outline badge-secondary" aria-label="genre">{{ g }}</div>
+                            {% endfor %}
+                            <p aria-label="release year">{{ a_release['year'] }}</p>
+                            <div class="card-actions justify-start">
+                                <form method="post">
+                                    <input type="hidden" name="record_id" value="{{ a_release['id'] }}">
+                                    <input type="hidden" name="record_mid" value="{{ a_release['master_id'] }}">
+                                    <input type="hidden" name="record_title" value="{{ a_release['title'] }}">
+                                    <input type="hidden" name="record_cover" value="{{ a_release['cover_image'] }}">
+                                    <input type="hidden" name="record_genres" value="{{ a_release['genre'] }}">
+                                    <input class="btn btn-neutral" type="submit" value="Recommend">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

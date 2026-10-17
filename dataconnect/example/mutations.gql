@@ -1,0 +1,52 @@
+mutation CreateUser ($authId: String!, $displayName: String!, $createdDate: Date!) @auth(level:PUBLIC) {
+    user_insert(data: {
+        authId: $authId,
+        displayName: $displayName,
+        createdDate: $createdDate
+    })
+}
+
+mutation CreateRelease ($title: String!, $masterId: String!, $regId: String!, $imageUrl: String!, $genres: [String!]) @auth(level:PUBLIC) {
+    release_insert(data: {
+        title: $title
+        masterId: $masterId
+        regId: $regId
+        imageUrl: $imageUrl
+        genres: $genres
+    })
+}
+
+mutation CreateRecommendation ($user: UUID, $release: UUID, $recText: String, $likes: Int!) @auth(level:PUBLIC) {
+    recommendation_insert(data: {
+        releaseId: $release,
+        userId: $user,
+        recText: $recText,
+        likes: $likes
+    })
+}
+
+mutation UpdateRecommendationLikes ($recommendation: UUID, $likesIncrement: Int!) @auth(level: PUBLIC) {
+    recommendation_update(id: $recommendation, data: {
+        likes_update: {
+            inc: $likesIncrement
+        }
+    })
+}
+
+mutation CreateLike ($user: UUID, $recommendation: UUID) @auth(level:PUBLIC) {
+    like_insert(data: {
+        userId: $user,
+        recId: $recommendation
+    })
+}
+
+mutation CreateFollow ($follower: UUID!, $following: UUID!) @auth(level:PUBLIC) {
+    follow_insert(data: {
+        followerId: $follower,
+        followingId: $following
+    })
+}
+
+mutation DeleteFollow ($id: UUID!) @auth(level:PUBLIC) {
+    follow_delete(id: $id)
+}
